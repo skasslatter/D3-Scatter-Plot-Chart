@@ -31,7 +31,7 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
   }
 
   renderGraph() {
-    const margin = { top: 10, right: 30, bottom: 30, left: 60 },
+    const margin = { top: 10, right: 30, bottom: 60, left: 60 },
       width = 460 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
@@ -56,6 +56,13 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
       .append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(x));
+    svg
+      .append("text")
+      .attr("text-anchor", "end")
+      .style("fill", "white")
+      .attr("x", width)
+      .attr("y", height + margin.top + 30)
+      .text(xAxisKey);
 
     // Add Y axis
     const y = d3
@@ -63,6 +70,14 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
       .domain([0, getMaxValue(this.tagsData, yAxisKey)])
       .range([height, 0]);
     svg.append("g").call(d3.axisLeft(y));
+    svg
+      .append("text")
+      .attr("text-anchor", "end")
+      .style("fill", "white")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -margin.left + 20)
+      .attr("x", -margin.top)
+      .text(yAxisKey);
 
     // Add dots
     svg
@@ -70,6 +85,9 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
       .selectAll("dot")
       .data(this.tagsData)
       .join("circle")
+      .attr("data-id", function (d: any) {
+        return d.id;
+      })
       .attr("cx", function (d: any) {
         return x(d[xAxisKey]);
       })
