@@ -7,36 +7,23 @@ interface ScatterChartProps {}
 class ScatterChart extends React.Component<ScatterChartProps> {
   myRef: RefObject<HTMLDivElement>;
   data: any;
-  numericOptions: { value: string; label: string }[];
-  tags: any[];
+  tagsData: any[];
   maxValueXAxis: number = 0;
   maxValueYAxis: number = 0;
+  numericKeys: string[];
 
   constructor(props: ScatterChartProps) {
     super(props);
     this.myRef = React.createRef();
     this.data = data;
 
-    const keys = Object.keys(data);
-    this.tags = keys.map((key) => {
-      return JSON.parse(this.data[key].tags);
+    this.tagsData = Object.keys(data).map((key) => {
+      const parsedObj = JSON.parse(this.data[key].tags);
+      return { ...parsedObj["igx-profile"], ...parsedObj["airr"] };
     });
-
-    // {
-    //   ...obj[key1],
-    //   ...obj[key2],
-    // }
-
-    const firstObject = JSON.parse(this.data[keys[0]].tags);
-    const nestedKeys = Object.keys(firstObject);
-    const numericKeys = [
-      ...getNumericKeys(firstObject[nestedKeys[0]]),
-      ...getNumericKeys(firstObject[nestedKeys[1]]),
-    ];
-    this.numericOptions = getNumericOptions(numericKeys);
-
-    this.maxValueXAxis = getMaxValue(this.tags, ["igx-profile", "J Score"]);
-    this.maxValueYAxis = getMaxValue(this.tags, ["airr", "Read Count"]);
+    this.numericKeys = getNumericKeys(this.tagsData[0]);
+    this.maxValueXAxis = getMaxValue(this.tagsData, "J Score");
+    this.maxValueYAxis = getMaxValue(this.tagsData, "Read Count");
   }
 
   componentDidMount() {
@@ -73,13 +60,13 @@ class ScatterChart extends React.Component<ScatterChartProps> {
     svg
       .append("g")
       .selectAll("dot")
-      .data(this.tags)
+      .data(this.tagsData)
       .join("circle")
       .attr("cx", function (d: any) {
-        return x(d["igx-profile"]["J Score"]);
+        return x(d["J Score"]);
       })
       .attr("cy", function (d: any) {
-        return y(d["airr"]["Read Count"]);
+        return y(d["Read Count"]);
       })
       .attr("r", 1.5)
       .style("fill", "#69b3a2");
@@ -89,7 +76,7 @@ class ScatterChart extends React.Component<ScatterChartProps> {
     return (
       <>
         <p>ScatterChart</p>
-        <DropdownSelect options={this.numericOptions} />
+        <DropdownSelect options={getNumericOptions(this.numericKeys)} />
         <div ref={this.myRef}></div>
       </>
     );
@@ -114,10 +101,9 @@ function getNumericOptions(keys: string[]): { value: string; label: string }[] {
   return numericOptions;
 }
 
-function getMaxValue(tags: any[], keys: Array<string>) {
+function getMaxValue(tags: any[], key: string) {
   const max = tags.reduce(
-    (prev, current) =>
-      prev > current[keys[0]][keys[1]] ? prev : current[keys[0]][keys[1]],
+    (prev, current) => (prev > current[key] ? prev : current[key]),
     0
   );
   return max;
