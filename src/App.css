@@ -1,11 +1,10 @@
 .App {
   text-align: center;
-	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Josefin Sans',
+    sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-
-}
+@media (prefers-reduced-motion: no-preference) {}
 
 .App-header {
   background-color: #282c34;
@@ -17,4 +16,3 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
