@@ -113,9 +113,9 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
 export default ScatterChart;
 
 function getTagsData() {
-  return Object.keys(data).map((key) => {
-    const parsedObj = JSON.parse((data as any)[key].tags);
-    return { ...parsedObj["igx-profile"], ...parsedObj["airr"] };
+  return Object.keys(data).map((id) => {
+    const parsedObj = JSON.parse((data as any)[id].tags);
+    return { id, ...parsedObj["igx-profile"], ...parsedObj["airr"] };
   });
 }
 
