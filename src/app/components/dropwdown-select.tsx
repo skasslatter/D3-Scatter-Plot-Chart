@@ -1,14 +1,24 @@
-import React, { FC } from "react";
+import React, { ChangeEventHandler, FC } from "react";
 
 interface DropdownSelectProps {
   options: { value: string; label: string }[];
+  handleXAxisChange: ChangeEventHandler<HTMLSelectElement>;
+  handleYAxisChange: ChangeEventHandler<HTMLSelectElement>;
+  xAxisValue: string;
+  yAxisValue: string;
 }
 
-export const DropdownSelect: FC<DropdownSelectProps> = ({ options }) => {
+export const DropdownSelect: FC<DropdownSelectProps> = ({
+  options,
+  handleXAxisChange,
+  handleYAxisChange,
+  xAxisValue,
+  yAxisValue,
+}) => {
   return (
     <>
       <div>Dropdown x axis</div>
-      <select>
+      <select id="xAxis" onChange={handleXAxisChange} value={xAxisValue}>
         {options.map((opt) => {
           return (
             <option key={opt.value} value={opt.value}>
@@ -18,7 +28,7 @@ export const DropdownSelect: FC<DropdownSelectProps> = ({ options }) => {
         })}
       </select>
       <div>Dropdown y axis</div>
-      <select>
+      <select id="yAxis" onChange={handleYAxisChange} value={yAxisValue}>
         {options.map((opt) => {
           return (
             <option key={opt.value} value={opt.value}>
