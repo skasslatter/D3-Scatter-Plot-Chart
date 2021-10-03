@@ -16,27 +16,31 @@ export const DropdownSelect: FC<DropdownSelectProps> = ({
   yAxisValue,
 }) => {
   return (
-    <>
-      <div>Dropdown x axis</div>
-      <select id="xAxis" onChange={handleXAxisChange} value={xAxisValue}>
-        {options.map((opt) => {
-          return (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          );
-        })}
-      </select>
-      <div>Dropdown y axis</div>
-      <select id="yAxis" onChange={handleYAxisChange} value={yAxisValue}>
-        {options.map((opt) => {
-          return (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          );
-        })}
-      </select>
-    </>
+    <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
+      <div>
+        <h5>Dropdown x axis</h5>
+        <select id="xAxis" onChange={handleXAxisChange} value={xAxisValue}>
+          {options.map((opt) => {
+            return (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <div>
+        <h5>Dropdown y axis</h5>
+        <select id="yAxis" onChange={handleYAxisChange} value={yAxisValue}>
+          {options.map((opt) => {
+            return (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+    </div>
   );
 };

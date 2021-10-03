@@ -33,8 +33,8 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
   }
 
   renderGraph() {
-    const margin = { top: 10, right: 30, bottom: 60, left: 60 },
-      width = 460 - margin.left - margin.right,
+    const margin = { top: 10, right: 30, bottom: 60, left: 80 },
+      width = 480 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
     d3.selectAll("svg").remove();
@@ -199,6 +199,9 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
 
   render() {
     this.renderGraph();
+    let selectedTags = this.tagsData.filter((obj) => {
+      return this.state.selectedIds.includes(obj.id);
+    });
 
     return (
       <>
@@ -211,7 +214,25 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
           handleYAxisChange={this.handleYAxisChange}
         />
         <div ref={this.myRef}></div>
-        {/* <div>{this.state.selectedIds}</div> */}
+        <h4>
+          You have selected {selectedTags.length}{" "}
+          {selectedTags.length !== 1 ? "sequences" : "sequence"}
+        </h4>
+        {selectedTags.length > 0 && (
+          <div className="grid">
+            <span>Id</span>
+            <span>CDR3 Nucleotides</span>
+
+            {selectedTags.slice(0, 10).map((tag) => {
+              return (
+                <>
+                  <span key={tag.id}>{tag.id}</span>
+                  <span key={tag.id}>{tag["CDR3 Nucleotides"]}</span>
+                </>
+              );
+            })}
+          </div>
+        )}
       </>
     );
   }
