@@ -6,6 +6,7 @@ interface ScatterChartProps {}
 interface State {
   xAxisKey: string;
   yAxisKey: string;
+  selectedIds: number[];
 }
 class ScatterChart extends React.Component<ScatterChartProps, State> {
   myRef: RefObject<HTMLDivElement>;
@@ -20,6 +21,7 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
     this.state = {
       xAxisKey: this.numericKeys[0],
       yAxisKey: this.numericKeys[1],
+      selectedIds: [],
     };
     this.handleXAxisChange = this.handleXAxisChange.bind(this);
     this.handleYAxisChange = this.handleYAxisChange.bind(this);
@@ -100,27 +102,32 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
       .attr("cy", function (d: any) {
         return y(d[yAxisKey]);
       })
-      .attr("r", 1.5);
+      .attr("r", 1.5)
+      .attr("class", (d: any) => {
+        return this.state.selectedIds.includes(d.id) ? "selected" : "";
+      });
 
     // Rectangular select
     svg
       .on("mousedown", function (e) {
-        if (!e.ctrlKey) {
-          d3.selectAll("g.selected").classed("selected", false);
-        }
+        d3.selectAll("circle.selected").classed("selected", false);
         svg
           .append("rect")
           .attr("x", e.layerX - margin.left)
           .attr("y", e.layerY - margin.top)
-          .attr("width", 10)
-          .attr("height", 10)
+          .attr("width", 0)
+          .attr("height", 0)
           .attr("class", "selection");
       })
 
-      .on("mouseup", function (e) {
-        d3.selectAll("circle").classed("selected", false);
-        svg.selectAll("rect.selection").remove();
-        d3.selectAll("g.state.selection").classed("selection", false);
+      .on("mouseup", (e) => {
+        const selectedIds: number[] = [];
+        d3.selectAll("circle.selected").each((state_data: any) => {
+          selectedIds.push(state_data.id);
+        });
+        this.setState({
+          selectedIds,
+        });
       })
 
       // .on("mouseout", function (e) {
@@ -162,8 +169,8 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
             .attr("width", d.width)
             .attr("height", d.height);
 
-          d3.selectAll("circle").classed("selected", false);
-          d3.selectAll("circle").each(function (state_data, i) {
+          d3.selectAll("g > circle.selected").classed("selected", false);
+          d3.selectAll("g > circle").each(function () {
             if (
               !d3.select(this).classed("selected") &&
               parseInt(d3.select(this).attr("cx")) >= d.x &&
@@ -204,6 +211,7 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
           handleYAxisChange={this.handleYAxisChange}
         />
         <div ref={this.myRef}></div>
+        {/* <div>{this.state.selectedIds}</div> */}
       </>
     );
   }
