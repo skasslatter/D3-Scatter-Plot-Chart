@@ -16,3 +16,17 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+rect.selection {
+	stroke: white;
+	stroke-dasharray: 4px;
+	stroke-width: 3px;
+	fill: transparent;
+}
+
+circle {
+	fill: #69b3a2;
+}
+circle.selected {
+	fill: orange;
+}

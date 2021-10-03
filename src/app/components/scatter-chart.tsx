@@ -44,6 +44,12 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
       .append("g")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+    svg
+      .append("rect")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "transparent");
+
     const xAxisKey = this.state.xAxisKey;
     const yAxisKey = this.state.yAxisKey;
 
@@ -94,8 +100,82 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
       .attr("cy", function (d: any) {
         return y(d[yAxisKey]);
       })
-      .attr("r", 1.5)
-      .style("fill", "#69b3a2");
+      .attr("r", 1.5);
+
+    // Rectangular select
+    svg
+      .on("mousedown", function (e) {
+        if (!e.ctrlKey) {
+          d3.selectAll("g.selected").classed("selected", false);
+        }
+        svg
+          .append("rect")
+          .attr("x", e.layerX - margin.left)
+          .attr("y", e.layerY - margin.top)
+          .attr("width", 10)
+          .attr("height", 10)
+          .attr("class", "selection");
+      })
+
+      .on("mouseup", function (e) {
+        d3.selectAll("circle").classed("selected", false);
+        svg.selectAll("rect.selection").remove();
+        d3.selectAll("g.state.selection").classed("selection", false);
+      })
+
+      // .on("mouseout", function (e) {
+      //   console.log("mouseout", e);
+      //   if (e.relatedTarget !== "svg") {
+      //     svg.selectAll("rect.selection").remove();
+      //     d3.selectAll("g.state.selection").classed("selection", false);
+      //   }
+      // })
+
+      .on("mousemove", function (e) {
+        let s = svg.select("rect.selection");
+        if (!s.empty()) {
+          let d = {
+            x: parseInt(s.attr("x"), 10),
+            y: parseInt(s.attr("y"), 10),
+            width: parseInt(s.attr("width"), 10),
+            height: parseInt(s.attr("height"), 10),
+          };
+          let move = {
+            x: e.layerX - margin.left - d.x,
+            y: e.layerY - margin.top - d.y,
+          };
+          if (move.x < 1 || move.x * 2 < d.width) {
+            d.x = e.layerX - margin.left;
+            d.width -= move.x;
+          } else {
+            d.width = move.x;
+          }
+          if (move.y < 1 || move.y * 2 < d.height) {
+            d.y = e.layerY - margin.top;
+            d.height -= move.y;
+          } else {
+            d.height = move.y;
+          }
+
+          s.attr("x", d.x)
+            .attr("y", d.y)
+            .attr("width", d.width)
+            .attr("height", d.height);
+
+          d3.selectAll("circle").classed("selected", false);
+          d3.selectAll("circle").each(function (state_data, i) {
+            if (
+              !d3.select(this).classed("selected") &&
+              parseInt(d3.select(this).attr("cx")) >= d.x &&
+              parseInt(d3.select(this).attr("cx")) <= d.x + d.width &&
+              parseInt(d3.select(this).attr("cy")) >= d.y &&
+              parseInt(d3.select(this).attr("cy")) <= d.y + d.height
+            ) {
+              d3.select(this).attr("class", "selected");
+            }
+          });
+        }
+      });
   }
 
   handleXAxisChange(event: React.ChangeEvent<HTMLSelectElement>) {
