@@ -2,7 +2,9 @@ import * as d3 from "d3";
 import React, { RefObject } from "react";
 import data from "../../data/data.json";
 import { DropdownSelect } from "../dropdown-select/dropdown-select";
+import { TableComponent } from "../table/table";
 import "./scatterplot-chart.css";
+
 interface ScatterChartProps { }
 interface State {
   xAxisKey: string;
@@ -221,23 +223,7 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
           You selected {selectedTags.length}{" "}
           {selectedTags.length !== 1 ? "sequences" : "sequence"}
         </h4>
-        {selectedTags.length > 0 && (
-          <div className="table">
-            <div className="row">
-              <span>Id</span>
-              <span>CDR3 Nucleotides</span>
-            </div>
-
-            {selectedTags.slice(0, 10).map((tag) => {
-              return (
-                <div key={tag.id} className="row tags">
-                  <span>{tag.id}</span>
-                  <span>{tag["CDR3 Nucleotides"]}</span>
-                </div>
-              );
-            })}
-          </div>
-        )}
+				<TableComponent data={selectedTags}/>
       </>
     );
   }

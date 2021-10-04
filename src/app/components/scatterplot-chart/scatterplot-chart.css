@@ -8,35 +8,6 @@ svg {
   margin-top: var(--margin-small);
 }
 
-.table {
-  display: flex;
-  flex-direction: column;
-  margin: var(--margin-large);
-}
-
-.row {
-  display: flex;
-  min-height: 50px;
-}
-
-.row>span {
-  padding: var(--padding-small);
-  border: 1px solid white;
-  overflow-wrap: anywhere;
-}
-
-.row>span:first-child {
-  flex: 1
-}
-
-.row>span:nth-child(2) {
-  flex: 2
-}
-
-.row.tags>span {
-  font-size: small;
-}
-
 /* disable text selection */
 svg *::selection {
   background: transparent;
