@@ -1,8 +1,9 @@
 import * as d3 from "d3";
 import React, { RefObject } from "react";
-import data from "../data/data.json";
-import { DropdownSelect } from "./dropwdown-select";
-interface ScatterChartProps {}
+import data from "../../data/data.json";
+import { DropdownSelect } from "../dropdown-select/dropdown-select";
+import "./scatterplot-chart.css";
+interface ScatterChartProps { }
 interface State {
   xAxisKey: string;
   yAxisKey: string;
@@ -205,30 +206,34 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
 
     return (
       <>
-        <h1>ScatterChart</h1>
-        <DropdownSelect
-          xAxisValue={this.state.xAxisKey}
-          yAxisValue={this.state.yAxisKey}
-          options={getNumericOptions(this.numericKeys)}
-          handleXAxisChange={this.handleXAxisChange}
-          handleYAxisChange={this.handleYAxisChange}
-        />
-        <div ref={this.myRef}></div>
+        <h1>ScatterPlot Chart</h1>
+        <div className="wrapper">
+          <DropdownSelect
+            xAxisValue={this.state.xAxisKey}
+            yAxisValue={this.state.yAxisKey}
+            options={getNumericOptions(this.numericKeys)}
+            handleXAxisChange={this.handleXAxisChange}
+            handleYAxisChange={this.handleYAxisChange}
+          />
+          <div ref={this.myRef}></div>
+        </div>
         <h4>
-          You have selected {selectedTags.length}{" "}
+          You selected {selectedTags.length}{" "}
           {selectedTags.length !== 1 ? "sequences" : "sequence"}
         </h4>
         {selectedTags.length > 0 && (
-          <div className="grid">
-            <span>Id</span>
-            <span>CDR3 Nucleotides</span>
+          <div className="table">
+            <div className="row">
+              <span>Id</span>
+              <span>CDR3 Nucleotides</span>
+            </div>
 
             {selectedTags.slice(0, 10).map((tag) => {
               return (
-                <>
-                  <span key={tag.id}>{tag.id}</span>
-                  <span key={tag.id}>{tag["CDR3 Nucleotides"]}</span>
-                </>
+                <div key={tag.id} className="row tags">
+                  <span>{tag.id}</span>
+                  <span>{tag["CDR3 Nucleotides"]}</span>
+                </div>
               );
             })}
           </div>

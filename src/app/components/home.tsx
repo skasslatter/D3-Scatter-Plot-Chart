@@ -1,5 +1,5 @@
 import React from "react";
-import ScatterChart from "./scatter-chart";
+import ScatterChart from "./scatterplot-chart/scatterplot-chart";
 
 export const HomeComponent = () => {
   return (

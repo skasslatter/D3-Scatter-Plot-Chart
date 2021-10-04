@@ -1,4 +1,5 @@
 import React, { ChangeEventHandler, FC } from "react";
+import "./dropdown-select.css";
 
 interface DropdownSelectProps {
   options: { value: string; label: string }[];
@@ -16,9 +17,9 @@ export const DropdownSelect: FC<DropdownSelectProps> = ({
   yAxisValue,
 }) => {
   return (
-    <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
+    <div className="container">
       <div>
-        <h5>Dropdown x axis</h5>
+        <h5>Dropdown X Axis</h5>
         <select id="xAxis" onChange={handleXAxisChange} value={xAxisValue}>
           {options.map((opt) => {
             return (
@@ -30,7 +31,7 @@ export const DropdownSelect: FC<DropdownSelectProps> = ({
         </select>
       </div>
       <div>
-        <h5>Dropdown y axis</h5>
+        <h5>Dropdown Y Axis</h5>
         <select id="yAxis" onChange={handleYAxisChange} value={yAxisValue}>
           {options.map((opt) => {
             return (
