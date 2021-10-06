@@ -220,8 +220,8 @@ class ScatterChart extends React.Component<ScatterChartProps, State> {
           <div ref={this.myRef}></div>
         </div>
         <h4>
-          You selected {selectedTags.length}{" "}
-          {selectedTags.length !== 1 ? "sequences" : "sequence"}
+          You selected {selectedTags.length}
+          {selectedTags.length !== 1 ? " sequences" : " sequence"}
         </h4>
 				<TableComponent data={selectedTags}/>
       </>
