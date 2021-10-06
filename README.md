@@ -18,4 +18,4 @@ You will also see any lint errors in the console.
 
 ### Used technologies:
 
-Angular | Typescript | CSS |  D3 chart library
+React | Typescript | CSS |  D3 chart library
