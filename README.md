@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# D3-Scatter-Plot-Chart
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 Before running the application, install the dependencies by running the following command: 
